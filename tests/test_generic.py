@@ -105,4 +105,4 @@ def test_choices_register():
 
 
 def test_model():
-    ExampleModel.example_class_choices
+    ExampleModel()

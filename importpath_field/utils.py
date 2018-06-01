@@ -24,6 +24,8 @@ def import_string(path):
 
 
 def get_path(obj):
+    if obj is None:
+        return None
     if isinstance(obj, types.ModuleType):
         return obj.__name__
 
