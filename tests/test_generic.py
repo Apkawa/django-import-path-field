@@ -3,11 +3,15 @@ from unittest.mock import Mock
 
 import pytest
 
+from importpath_field.choices import ImportPathChoices
 from importpath_field.db.descriptors import ProxyFieldDescriptor
 from importpath_field.utils import get_path
-from importpath_field.choices import ImportPathChoices
-from tests.example_classes import example_function, ExampleClassStrategy, DescriptionClassStrategy, \
+from tests.example_classes import (
+    example_function,
+    ExampleClassStrategy,
+    DescriptionClassStrategy,
     example_function_description
+)
 from tests.models import ExampleModel
 
 
@@ -105,4 +109,18 @@ def test_choices_register():
 
 
 def test_model():
-    ExampleModel()
+    e = ExampleModel.objects.create(example_class=ExampleClassStrategy)
+    assert e.example_class.resolve is ExampleClassStrategy
+    assert e.example_class.path == 'tests.example_classes.ExampleClassStrategy'
+
+    assert ExampleModel.objects.filter(example_class=ExampleClassStrategy).count() == 1
+    assert ExampleModel.objects.filter(
+        example_class='tests.example_classes.ExampleClassStrategy').count() == 1
+
+    e2 = ExampleModel()
+    e2.example_class = ExampleClassStrategy
+    assert e.example_class.resolve is ExampleClassStrategy
+    assert e.example_class.path == 'tests.example_classes.ExampleClassStrategy'
+    e2.example_class = 'tests.example_classes.ExampleClassStrategy'
+    assert e.example_class.resolve is ExampleClassStrategy
+    assert e.example_class.path == 'tests.example_classes.ExampleClassStrategy'

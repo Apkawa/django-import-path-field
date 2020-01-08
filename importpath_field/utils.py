@@ -5,7 +5,30 @@ import types
 import six
 
 from .compat import import_string as _import_string
-from .inspect_mate import is_class_method, is_static_method
+
+
+def is_class_method(klass, attr, value=None):
+    """Test if a value of a class is class method.
+    example::
+        class MyClass(object):
+            @classmethod
+            def method(cls):
+                ...
+    :param klass: the class
+    :param attr: attribute name
+    :param value: attribute value
+    """
+    if value is None:
+        value = getattr(klass, attr)
+    assert getattr(klass, attr) == value
+
+    for cls in inspect.getmro(klass):
+        if inspect.isroutine(value):
+            if attr in cls.__dict__:
+                binded_value = cls.__dict__[attr]
+                if isinstance(binded_value, classmethod):
+                    return True
+    return False
 
 
 def import_string(path):

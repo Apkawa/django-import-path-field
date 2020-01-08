@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
+from .fields import ImportPathField
 
-__version__ = '0.0.1'
-
-default_app_config = 'importpath_field.apps.ImportpathFieldConfig'
-
+__all__ = ['ImportPathField']

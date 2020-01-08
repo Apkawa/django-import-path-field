@@ -1,6 +1,5 @@
 import six
 
-from importpath_field.inspect_mate import is_class_method
 from importpath_field.utils import import_string, get_path
 
 

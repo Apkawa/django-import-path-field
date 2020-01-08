@@ -1,7 +1,6 @@
 import six
 
 from importpath_field.utils import import_string, get_path
-from django.db.models import FileField
 
 
 class ImportPathProxy(object):

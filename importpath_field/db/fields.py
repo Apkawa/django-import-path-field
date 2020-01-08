@@ -1,5 +1,7 @@
 from django.db import models
+
 from .descriptors import ProxyFieldDescriptor, ImportPathProxy
+from ..utils import get_path
 
 
 class ImportPathField(models.CharField):
@@ -15,7 +17,12 @@ class ImportPathField(models.CharField):
     def get_prep_value(self, value):
         if isinstance(value, ImportPathProxy):
             return value.path
+        if not isinstance(value, str):
+            return get_path(value)
         return value
+
+    def get_db_prep_value(self, value, connection, prepared=False):
+        return self.get_prep_value(value)
 
     def value_to_string(self, obj):
         value = self._get_val_from_obj(obj)

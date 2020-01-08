@@ -1,7 +1,8 @@
 from django.db import models
 
-from importpath_field.db.fields import ImportPathField
-from importpath_field.choices import ImportPathChoices
+from importpath_field import ImportPathField, ImportPathChoices
+
+
 
 IMPORT_CHOICES = ImportPathChoices()
 
